@@ -398,6 +398,38 @@ Cleanup:
     return err;
 }
 
+//================================================================
+// PKCodecFactory // ADDED By Christoph Gohlke
+//================================================================
+ERR PKCodecFactory_CreateDecoderFromBytes(void* bytes, size_t len, PKImageDecode** ppDecoder)
+{
+	ERR err = WMP_errSuccess;
+
+	char *pExt = NULL;
+	const PKIID* pIID = NULL;
+
+	struct WMPStream* pStream = NULL;
+	PKImageDecode* pDecoder = NULL;
+
+	// get decode PKIID
+	Call(GetImageDecodeIID((const char *)".jxr", &pIID));
+
+	// create stream
+	Call(CreateWS_Memory(&pStream, bytes, len));
+
+	// Create decoder
+	Call(PKCodecFactory_CreateCodec(pIID, (void **)ppDecoder));
+	pDecoder = *ppDecoder;
+
+	// attach stream to decoder
+	Call(pDecoder->Initialize(pDecoder, pStream));
+	pDecoder->fStreamOwner = !0;
+
+Cleanup:
+	return err;
+}
+
+
 ERR PKCodecFactory_CreateDecoderFromFile(const char* szFilename, PKImageDecode** ppDecoder)
 {
     ERR err = WMP_errSuccess;

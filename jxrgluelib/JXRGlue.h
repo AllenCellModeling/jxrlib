@@ -586,6 +586,7 @@ ERR PKImageDecode_GetPhotoshopMetadata_WMP(PKImageDecode *pID, U8 *pbPhotoshopMe
 
 ERR PKImageDecode_Create(PKImageDecode** ppID);
 ERR PKCodecFactory_CreateDecoderFromFile(const char* szFilename, PKImageDecode** ppDecoder);
+ERR PKCodecFactory_CreateDecoderFromBytes(void* data, size_t size, PKImageDecode** ppDecoder);
 
 //================================================================
 typedef struct tagPKFormatConverter
