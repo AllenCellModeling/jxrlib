@@ -40,11 +40,9 @@ DIR_ENC=image/encode
 
 DIR_GLUE=jxrgluelib
 DIR_CXX=cpp
-DIR_JAVA=java/target/swig
 DIR_TEST=jxrtestlib
 DIR_EXEC=jxrencoderdecoder
 
-JAVA_PKG=ome/jxrlib
 
 ## Are we building shared?
 ifneq ($(SHARED),)
@@ -57,14 +55,6 @@ ifneq ($(BIG_ENDIAN),)
 ENDIANFLAG=-D_BIG__ENDIAN_
 else
 ENDIANFLAG=
-endif
-
-ifndef JAVA_HOME
-JAVA_HOME:=$(shell jrunscript -e 'java.lang.System.out.println(new java.io.File(java.lang.System.getProperty("java.home")).getParent());')
-endif
-
-ifndef JAVA_INCLUDE
-JAVA_INCLUDE=$(JAVA_HOME)/include
 endif
 
 ifndef DIR_BUILD
@@ -244,21 +234,6 @@ $(DIR_BUILD)/libjxr++.$(LIBSUFFIX): $(OBJ_CXX) | $(LIBRARIES)
 	$(CXX) -shared $(OBJ_CXX) -fPIC $(LIBS) -o $@
 
 
-##--------------------------------
-##
-## Java Wrapper library
-##
-
-SRC_JAVA=$(wildcard $(DIR_SRC)/$(DIR_JAVA)/$(JAVA_PKG)/*.java)
-
-swig:
-	mkdir -p $(DIR_SRC)/$(DIR_JAVA)/$(JAVA_PKG)
-	$(SWIG) -java -c++ -package ome.jxrlib -outdir $(DIR_SRC)/$(DIR_JAVA)/$(JAVA_PKG) -o $(DIR_SRC)/$(DIR_JAVA)/JXR_wrap.cxx java/JXR.i
-
-$(DIR_BUILD)/libjxrjava.$(LIBSUFFIX): $(LIBRARIES) $(CXX_LIBRARIES)
-	@echo "Building JNI"
-	@echo "JAVA_INCLUDE=$(JAVA_INCLUDE)"
-	$(CXX) -o $(DIR_BUILD)/libjxrjava.$(LIBSUFFIX) -shared -I$(JAVA_INCLUDE) -I$(JAVA_INCLUDE)/$(PLATFORM) -I$(DIR_CXX)/lib $(CXXFLAGS) $(OBJ_SYS) $(OBJ_ENC) $(OBJ_DEC) $(OBJ_GLUE) $(OBJ_TEST) $(OBJ_CXX) $(DIR_JAVA)/JXR_wrap.cxx
 
 ##--------------------------------
 ##
@@ -299,7 +274,7 @@ $(DIR_BUILD)/$(CXXDECAPP): $(DIR_SRC)/$(DIR_CXX)/$(CXXDECAPP).cpp $(LIBRARIES) $
 ##
 ## JPEG XR library
 ##
-all: $(DIR_BUILD)/$(ENCAPP) $(DIR_BUILD)/$(DECAPP) $(DIR_BUILD)/$(CXXDECAPP) $(LIBRARIES) $(CXX_LIBRARIES) $(DIR_BUILD)/libjxrjava.$(LIBSUFFIX)
+all: $(DIR_BUILD)/$(ENCAPP) $(DIR_BUILD)/$(DECAPP) $(DIR_BUILD)/$(CXXDECAPP) $(LIBRARIES) $(CXX_LIBRARIES) 
 
 clean:
 	rm -rf $(DIR_BUILD)/*App $(DIR_BUILD)/**/*.o $(DIR_BUILD)/**/*.class $(DIR_BUILD)/libj*.a $(DIR_BUILD)/libj*.$(LIBSUFFIX) $(DIR_BUILD)/libjxr.pc $(DIR_BUILD)/$(CXXDECAPP) $(DIR_BUILD)/$(JAR)
