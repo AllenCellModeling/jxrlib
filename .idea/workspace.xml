@@ -35,9 +35,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88ea27c4-315d-4c8f-8c39-6148b0b33669" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/README.md" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/Makefile" afterPath="$PROJECT_DIR$/Makefile" />
+      <change beforePath="$PROJECT_DIR$/Makefile" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -147,16 +146,6 @@
                 <element signature="e#2346#2448#0" expanded="true" />
                 <element signature="e#4861#4943#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Makefile" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Makefile">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2055">
-              <caret line="137" column="70" lean-forward="false" selection-start-line="137" selection-start-column="70" selection-end-line="137" selection-end-column="70" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -306,12 +295,20 @@
       <option name="presentableId" value="Default" />
       <updated>1521243919749</updated>
       <workItem from="1521243921218" duration="18516000" />
-      <workItem from="1521568971146" duration="2076000" />
+      <workItem from="1521568971146" duration="2467000" />
     </task>
+    <task id="LOCAL-00001" summary="Added a Readme with overview with instructions of what the repo provides and what it does not with minimal build instructions&quot;">
+      <created>1521571482952</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1521571482952</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20592000" />
+    <option name="totallyTimeSpent" value="20983000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="159" y="46" width="1943" height="1254" extended-state="0" />
@@ -343,6 +340,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added a Readme with overview with instructions of what the repo provides and what it does not with minimal build instructions&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added a Readme with overview with instructions of what the repo provides and what it does not with minimal build instructions&quot;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
