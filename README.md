@@ -33,3 +33,4 @@ of the executables built by the original package (JxrEncApp or JxrDecApp).
 3) cd build
 4) cmake ../
 5) make 
+6) make install
