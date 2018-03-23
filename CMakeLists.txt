@@ -1,15 +1,38 @@
 cmake_minimum_required(VERSION 3.9)
 project(jxrlib)
 
-set(CMAKE_CXX_STANDARD 14)
-# set( CMAKE_VERBOSE_MAKEFILE on )
+set(CMAKE_CXX_STANDARD 11)
+set( CMAKE_VERBOSE_MAKEFILE on )
 
-set(JXR_Glue_HEADERS
+set(JXR_INC_COMMON_HEADERS
+        common/include/guiddef.h
+        common/include/wmsal.h
+        common/include/wmspecstring.h
+        common/include/wmspecstrings_adt.h
+        common/include/wmspecstrings_strict.h
+        common/include/wmspecstrings_undef.h
+        )
+
+
+set(JXR_INC_GLUE_HEADERS  # these get installed to include/glue rather than jxrgluelib/
         jxrgluelib/JXRGlue.h
         jxrgluelib/JXRMeta.h
-        jxrgluelib/JXRGluePFC.h
-        jxrgluelib/JXRGlueJxr.h
         )
+
+set(JXR_INC_IMAGE_HEADERS
+        image/decode/decode.h
+        image/encode/encode.h
+        image/sys/ansi.h
+        image/sys/common.h
+        image/sys/perfTimer.h
+        image/sys/strTransform.h
+        image/sys/strcodec.h
+        image/sys/windowsmediaphoto.h
+        image/sys/xplatform_image.h
+        )
+
+set(JXR_INC_IMAGE_X86_HEADERS
+        image/x86/x86.h)
 
 set(JXR_Glue_SOURCES
         jxrgluelib/JXRGlue.c
@@ -31,7 +54,7 @@ add_definitions(-D__ANSI__)
 add_definitions(-Wno-shift-negative-value) # there's some bitshift logic that causes a warning under clang
 add_definitions(-Wno-dangling-else) # there's a klugie macro that causes compiler warnings without this
 
-add_library(jxrglue STATIC ${JXR_Glue_SOURCES})
+add_library(jxrglue STATIC ${JXR_Glue_SOURCES} ${JXR_INC_Glue_HEADERS} ${JXR_INC_IMAGE_HEADERS} ${JXR_INC_COMMON_HEADERS})
 target_include_directories(jxrglue PUBLIC jxrgluelib image/sys common/include)
 
 
@@ -67,7 +90,7 @@ add_definitions(-Wno-implicit-function-declaration) # there's some terrible #def
 add_definitions(-Wno-deprecated-declarations) # this is to override the error message not to use tmpnam
 add_definitions(-Wno-constant-conversion)
 
-add_library(jpegxr STATIC ${COMMON_SRC} ${DECODE_SRC} ${ENCODE_SRC})
+add_library(jpegxr STATIC ${COMMON_SRC} ${DECODE_SRC} ${ENCODE_SRC} ${JXR_INC_COMMON_HEADERS} ${JXR_INC_IMAGE_HEADERS})
 target_include_directories(jpegxr PUBLIC common/include image/sys)
 
 set(JXRPP_SRC
@@ -83,73 +106,22 @@ add_definitions(-Wno-self-assign-field)
 add_library(jxr++ STATIC ${JXRPP_SRC})
 target_include_directories(jxr++ PUBLIC common/include image/sys jxrgluelib jxrtestlib)
 
+install( TARGETS jxrglue jpegxr jxr++
+            LIBRARY DESTINATION lib
+            ARCHIVE DESTINATION lib
+            )
 
-#add_executable(jxrlib
-#        common/include/guiddef.h
-#        common/include/wmsal.h
-#        common/include/wmspecstring.h
-#        common/include/wmspecstrings_adt.h
-#        common/include/wmspecstrings_strict.h
-#        common/include/wmspecstrings_undef.h
-#        cpp/lib/CodecFactory.cpp
-#        cpp/lib/CodecFactory.hpp
-#        cpp/lib/DecodeContext.cpp
-#        cpp/lib/DecodeContext.hpp
-#        cpp/lib/Factory.cpp
-#        cpp/lib/Factory.hpp
-#        cpp/lib/FormatConverter.hpp
-#        cpp/lib/FormatError.hpp
-#        cpp/lib/ImageDecoder.cpp
-#        cpp/lib/ImageDecoder.hpp
-#        cpp/lib/ImageEncoder.cpp
-#        cpp/lib/ImageEncoder.hpp
-#        cpp/lib/Resolution.hpp
-#        cpp/lib/Stream.cpp
-#        cpp/lib/Stream.hpp
-#        cpp/jxrdecode.cpp
-#        image/decode/decode.c
-#        image/decode/decode.h
-#        image/decode/JXRTranscode.c
-#        image/decode/postprocess.c
-#        image/decode/segdec.c
-#        image/decode/strdec.c
-#        image/decode/strdec_x86.c
-#        image/decode/strInvTransform.c
-#        image/decode/strPredQuantDec.c
-#        image/encode/encode.c
-#        image/encode/encode.h
-#        image/encode/segenc.c
-#        image/encode/strenc.c
-#        image/encode/strenc_x86.c
-#        image/encode/strFwdTransform.c
-#        image/encode/strPredQuantEnc.c
-#        image/sys/adapthuff.c
-#        image/sys/ansi.h
-#        image/sys/common.h
-#        image/sys/image.c
-#        image/sys/perfTimer.h
-#        image/sys/perfTimerANSI.c
-#        image/sys/strcodec.c
-#        image/sys/strcodec.h
-#        image/sys/strPredQuant.c
-#        image/sys/strTransform.c
-#        image/sys/strTransform.h
-#        image/sys/windowsmediaphoto.h
-#        image/sys/xplatform_image.h
-#        jxrencoderdecoder/JXRDec420.c
-#        jxrencoderdecoder/JxrDecApp.c
-#        jxrencoderdecoder/JxrEnc420.c
-#        jxrencoderdecoder/JxrEncApp.c
-#        jxrgluelib/JXRGlue.c
-#        jxrgluelib/JXRGlue.h
-#        jxrgluelib/JXRGlueJxr.c
-#        jxrgluelib/JXRGluePFC.c
-#        jxrgluelib/JXRMeta.c
-#        jxrgluelib/JXRMeta.h
-#        jxrtestlib/JXRTest.c
-#        jxrtestlib/JXRTest.h
-#        jxrtestlib/JXRTestBmp.c
-#        jxrtestlib/JXRTestHdr.c
-#        jxrtestlib/JXRTestPnm.c
-#        jxrtestlib/JXRTestTif.c
-#        jxrtestlib/JXRTestYUV.c)
+install(FILES ${JXR_INC_COMMON_HEADERS}
+        DESTINATION "include/test_libjxr/common")
+
+install(FILES ${JXR_INC_IMAGE_HEADERS}
+        DESTINATION "include/test_libjxr/image"
+        )
+
+install(FILES ${JXR_INC_IMAGE_X86_HEADERS}
+        DESTINATION "include/test_libjxr/image/x86"
+        )
+
+install(FILES ${JXR_INC_GLUE_HEADERS}
+        DESTINATION "include/test_libjxr/glue"
+        )
