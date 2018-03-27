@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.9)
+#cmake_minimum_required(VERSION 3.9)
 project(jxrlib)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -50,6 +50,7 @@ set(JXR_Glue_Test_SOURCES
         jxrtestlib/JXRTestYUV.c
         )
 
+add_definitions(-fPIC)
 add_definitions(-D__ANSI__)
 add_definitions(-Wno-shift-negative-value) # there's some bitshift logic that causes a warning under clang
 add_definitions(-Wno-dangling-else) # there's a klugie macro that causes compiler warnings without this
@@ -112,16 +113,16 @@ install( TARGETS jxrglue jpegxr jxr++
             )
 
 install(FILES ${JXR_INC_COMMON_HEADERS}
-        DESTINATION "include/test_libjxr/common")
+        DESTINATION "include/libjxr/common")
 
 install(FILES ${JXR_INC_IMAGE_HEADERS}
-        DESTINATION "include/test_libjxr/image"
+        DESTINATION "include/libjxr/image"
         )
 
 install(FILES ${JXR_INC_IMAGE_X86_HEADERS}
-        DESTINATION "include/test_libjxr/image/x86"
+        DESTINATION "include/libjxr/image/x86"
         )
 
 install(FILES ${JXR_INC_GLUE_HEADERS}
-        DESTINATION "include/test_libjxr/glue"
+        DESTINATION "include/libjxr/glue"
         )
